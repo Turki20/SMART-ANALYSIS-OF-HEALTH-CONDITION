@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>مرحبًا بك في لوحة الإدارة</h1>
+<p>هنا يمكنك إدارة جميع جوانب التطبيق بكل سهولة.</p>
+
+<div class="row">
+    <div class="col">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">عدد الدكاترة</h5>
+                <p class="card-text">{{numberOfDoctor}} دكتور مسجل.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">عدد المرضى</h5>
+                <p class="card-text">{{numberOfPatient}} مريض مسجل.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">عدد المواعيد</h5>
+                <p class="card-text">{{numberOfApp}} موعد مسجل.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="card mb-4">
+    <div class="card-title p-3">
+        <h4>اخر العمليات</h4>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <th>العمليه</th>
+                <th>وقت اجراء العملية</th>
+                <th>صدرت من</th>
+            </thead>
+            <tbody>
+                {% for i in logs %}
+                  <tr>
+                    <td>{{i.action}}</td>
+                    <td>{{i.timestamp}}</td>
+                    <td>{{i.adminID}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {{popular_admin_actions}}
+    </div>
+</div>
+
+
+<!-- محتوى طويل لتجربة السكّ رول -->
+<div style="height: 1000px;"></div>
+{% endblock content %}

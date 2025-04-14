@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form input,
+    select {
+        margin-bottom: 30px;
+        margin-top: 10px;
+        height: 35px;
+        border-radius: 5px;
+        border: 1px rgba(128, 128, 128, 0.404) solid;
+        width: 50%;
+    }
+
+    form select {
+        width: 50%;
+    }
+
+    form div {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+    }
+
+    form label {
+        padding: 20px;
+        width: 150px;
+    }
+
+    form button {
+        width: 30%;
+    }
+
+    .alert-error {
+        background-color: rgba(240, 128, 128, 0.237);
+        color: rgb(234, 73, 73);
+    }
+
+    #div textarea {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px rgba(128, 128, 128, 0.47) solid;
+
+    }
+</style>
+<div class="row mb-3">
+    <div class="col">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" style="color: gray;" aria-current="page" href="{% url 'all_appintments' %}">جميع المواعيد</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">موعد جديد</a>
+            </li>
+          </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card p-4">
+            <div class="row">
+                <div class="col text-center"><h3>موعد جديد</h3></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="card p-3">
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="id_patientID" class="label-form">اختر المستخدم*</label>
+                    {{form.patientID}}
+                    <label for="id_doctorID" class="label-form">الدكتور*</label>
+                    {{form.doctorID}}
+                </div>
+                <div>
+                    <label for="id_time" class="label-form">*الوقت</label>
+                    {{form.time}}
+                </div>
+                <div>
+                    <label for="id_status" class="label-form">*الحالة</label>
+                    {{form.status}}
+                </div>
+                <button class="btn btn-outline-success">انشاء</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

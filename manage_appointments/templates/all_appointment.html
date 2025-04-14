@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    table {
+        background-color: #04bdbd20;
+    }
+
+    .alert-error {
+        background-color: rgba(240, 128, 128, 0.237);
+        color: rgb(234, 73, 73);
+    }
+</style>
+
+<div class="row mb-3">
+    <div class="col">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">جميع المواعيد</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="color: gray;" href="{% url 'create_appointment' %}">موعد جديد</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card p-4">
+            <form action="" method="">
+                <div class="row">
+                    <div class="col-2">
+                        <label for="username" class="form-label mt-2">ادخل الموعد</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="username" id="username" placeholder="ادخل الموعد "
+                            class="form-control mt-2">
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-success mt-2">بحث</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col">
+        <div class="card p-2">
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <h4 class="m-3">سجلات المواعيد</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>اسم المريض</th>
+                        <th>اسم الدكتور</th>
+                        <th>تاريخ اصدار الموعد</th>
+                        <th>تاريخ ووقت الموعد</th>
+                        <th>الحالة</th>
+                        <th class="text-center">اجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in app %}
+                    {% if i.patientID != None %}
+                    <tr>
+                        <td>{{i.patientID.userID.first_name}}</td>
+                        <td>{{i.doctorID.userID.first_name}}</td>
+                        <td>{{i.date}}</td>
+                        <td>{{i.time}}</td>
+                        <td>{{i.status}}</td>
+                        <td class="text-center">
+                            <a href="{% url 'delet_appintment' i.id %}"><button class="btn btn-outline-danger m-1">حذف</button></a>
+                            <a href="{% url 'update_appintment' i.id %}"><button class="btn btn-outline-dark m-1">تعديل</button></a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

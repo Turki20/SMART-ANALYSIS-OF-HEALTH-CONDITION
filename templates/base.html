@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+
+    <!-- خط المراعي -->
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    <title>admin</title>
+</head>
+<style>
+    body {
+        min-height: 100vh;
+        background-color: #f8f9fa;
+        overflow: hidden;
+        font-family: 'Almarai', sans-serif;
+
+    }
+
+    .sidebar {
+        height: calc(100vh - 56px);
+        position: fixed;
+        right: 0;
+        top: 56px;
+        /* ارتفاع الهيدر */
+        width: 250px;
+        background-color: darkcyan;
+        color: white;
+        padding-top: 30px;
+        overflow-y: auto;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+    .sidebar a {
+        color: white;
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: 0.1s ease-in-out;
+        border-bottom: 1px #01545485 solid;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .sidebar a i {
+        width: 20%;
+    }
+
+    .sidebar a:hover {
+        background-color: #007070;
+    }
+
+    .content {
+        margin-right: 250px;
+        margin-top: 56px;
+        height: calc(100vh - 56px);
+        overflow-y: auto;
+        padding: 30px;
+        background: whitesmoke;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        box-shadow: -3px 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: #007070;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* تصميم الـ Scrollbar */
+    .content::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .content::-webkit-scrollbar-track {
+        background: white;
+        border-radius: 5px;
+        width: 80%;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+        background: #007070;
+        border-radius: 10px;
+        border: 2px solid #f1f1f1;
+        transition: 0.1s ease-in-out;
+    }
+
+    .content::-webkit-scrollbar-thumb:hover {
+        background: #495057;
+    }
+</style>
+
+<body dir="rtl">
+
+    <!-- الهيدر -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">لوحة الإدارة</a>
+        </div>
+        <div style="margin-left: 20px;">
+            <a class="navbar-brand" href="#"><button class="btn btn-danger">تسجيل الخروج</button></a>
+        </div>
+    </nav>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+<!--         <h5 class="text-center">القائمة</h5> -->
+        <a href="/"><i class="fas fa-home"></i> الرئيسية</a>
+        <a href="{% url 'all_users' %}"><i class="fas fa-users"></i> ادارة المستخدمين</a>
+        <a href="{% url 'all_patients' %}"> <i class="fa-solid fa-hospital-user"></i> ادارة المرضى</a>
+        <a href="{% url 'all_doctors' %}"><i class="fa-solid fa-user-doctor"></i> ادارة الدكاترة</a>
+        <a href="{% url 'all_appintments' %}"><i class="fa-solid fa-calendar-check"></i> ادارة المواعيد</a>
+        <a href="#"><i class="fas fa-heartbeat"></i> البيانات الصحية</a>
+        <a href="#"><i class="fas fa-file-alt"></i> التقارير</a>
+        <a href="#"><i class="fas fa-cogs"></i> الإعدادات</a>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="content">
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+
+
+    {% bootstrap_javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

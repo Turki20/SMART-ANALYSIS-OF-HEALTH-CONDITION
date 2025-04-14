@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form input,
+    select {
+        margin-bottom: 30px;
+        margin-top: 10px;
+        height: 35px;
+        border-radius: 5px;
+        border: 1px rgba(128, 128, 128, 0.404) solid;
+        width: 50%;
+    }
+
+    form select {
+        width: 50%;
+    }
+
+    form div {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+    }
+
+    form label {
+        padding: 20px;
+        width: 150px;
+    }
+
+    form button {
+        width: 30%;
+    }
+
+    .alert-error {
+        background-color: rgba(240, 128, 128, 0.237);
+        color: rgb(234, 73, 73);
+    }
+
+    #div textarea {
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px rgba(128, 128, 128, 0.47) solid;
+    }
+</style>
+<div class="row mb-3">
+    <div class="col">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link" style="color: gray;" aria-current="page" href="{% url 'all_patients' %}">جميع المرضى</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  style="color: gray;" href="{% url 'create_patient' %}">اضاقة مريض</a>
+            </li>
+          </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card p-4">
+            <div class="row">
+                <div class="col text-center"> <h3>تحديث البيانات</h3></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="card p-3">
+            {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="card p-4 mt-2">
+                <h4>بيانات المستخدم</h4>
+                <form action="{% url 'update_patient' id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_username">اسم المستخدم</label>
+                        {{formUser.username}}
+                        <label for="id_username">الاسم الاول</label>
+                        {{formUser.first_name}}
+                    </div>
+                    <div>
+                        <label for="id_username">الاسم الثاني</label>
+                        {{formUser.last_name}}
+                        <label for="id_username">الايميل</label>
+                        {{formUser.email}}
+                    </div>
+                    <button class="btn btn-outline-success" name="form_type" value="formUserData">تحديث</button>
+    
+                </form>
+            </div>
+            <div class="card p-4 mt-4">
+                <h4>بيانات شخصية</h4>
+                <form action="{% url 'update_patient' id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_username">العمر</label>
+                        {{form.age}}
+                        <label for="id_username">الجنس</label>
+                        {{form.gender}}
+                    </div>
+                    <div id="div">
+                        <label for="id_healthdataa">الحالة الصحية</label>
+                        {{form.healthdataa}}
+                    </div>
+                    <button class="btn btn-outline-success" name="form_type" value="formPatientData">تحديث</button>
+    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
