@@ -35,12 +35,12 @@ cd ..
 pip install -r requirements.txt
 ```
 
-* MySQL
-4.create database
+* MySQL 
+4. create database
 ```sql
 CREATE DATABASE smart_analysis_of_health_condition;
 ```
-* setting.py
+* visual stodio code > setting.py
 5. Connect the project to the database through the setting.py file.
 ```python
 DATABASES = {
