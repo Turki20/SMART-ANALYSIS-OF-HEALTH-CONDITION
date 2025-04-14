@@ -1,4 +1,5 @@
 # Smart Analysis Of Health Conditions
+...
 
 ## Features
 - 
@@ -35,15 +36,17 @@ pip install -r requirements.txt
 ```
 
 * MySQL
+4.create database
 ```sql
-CREATE DATABASE trip_to_jeddah;
+CREATE DATABASE smart_analysis_of_health_condition;
 ```
 * setting.py
+5. Connect the project to the database through the setting.py file.
 ```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'trip_to_jeddah',
+        'NAME': 'smart_analysis_of_health_condition',
         'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -52,10 +55,12 @@ DATABASES = {
 }
 ```
 * terminal (windows)
+6. Run migrations:
 ``` bash
 python manage.py makemigrations
 python manage.py migrate
 ```
+7. run the project
 ```bash
 python manage.py runserver
 ```
