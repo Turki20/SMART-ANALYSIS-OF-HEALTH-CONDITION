@@ -9,6 +9,7 @@ from .forms import CreateUserForm, UpdateUserForm
 from manage_patients.models import Patient
 from django.contrib import messages
 from manage_doctors.models import Doctor
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -84,3 +85,8 @@ def delete_user(request, user_id):
     newLog.save()
     messages.success(request, 'تم حذف المستخدم بنجاح!')
     return redirect('/user/all_users/')
+
+
+def logout_view(request):
+    logout(request) 
+    return redirect('/') 

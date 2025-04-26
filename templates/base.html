@@ -110,13 +110,21 @@
             <a class="navbar-brand" href="#">لوحة الإدارة</a>
         </div>
         <div style="margin-left: 20px;">
-            <a class="navbar-brand" href="#"><button class="btn btn-danger">تسجيل الخروج</button></a>
+            {% if not request.user.is_authenticated %}
+
+            {% else %}
+            <a class="navbar-brand" href="{% url 'logout' %}"><button class="btn btn-danger">تسجيل الخروج</button></a>
+            {% endif %}
         </div>
     </nav>
 
     <!-- القائمة الجانبية -->
     <div class="sidebar">
 <!--         <h5 class="text-center">القائمة</h5> -->
+        {% if not request.user.is_authenticated %}
+
+        {% else %}
+        
         <a href="/"><i class="fas fa-home"></i> الرئيسية</a>
         <a href="{% url 'all_users' %}"><i class="fas fa-users"></i> ادارة المستخدمين</a>
         <a href="{% url 'all_patients' %}"> <i class="fa-solid fa-hospital-user"></i> ادارة المرضى</a>
@@ -125,6 +133,7 @@
         <a href="#"><i class="fas fa-heartbeat"></i> البيانات الصحية</a>
         <a href="#"><i class="fas fa-file-alt"></i> التقارير</a>
         <a href="#"><i class="fas fa-cogs"></i> الإعدادات</a>
+        {% endif %}
     </div>
 
     <!-- المحتوى الرئيسي -->

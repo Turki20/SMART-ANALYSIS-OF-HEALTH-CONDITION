@@ -10,11 +10,10 @@ from manage_appointments.models import Appointments
 # Create your views here.
 from django.db.models import Count
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="/user/login/")
 @staff_member_required
 def home_page(request):
     adminLog = AdminLog.objects.order_by('-timestamp')[:10]
-    popular_admin_actions = AdminLog.objects.values('action').annotate(count=Count('id')).order_by('-count')
     numberOfPatient = Patient.objects.count()
     numberOfDoctor = Doctor.objects.count()
     numberOfApp = Appointments.objects.count()                
@@ -23,6 +22,5 @@ def home_page(request):
         'numberOfPatient': numberOfPatient,
         'numberOfDoctor': numberOfDoctor,
         'numberOfApp': numberOfApp,
-        'popular_admin_actions': popular_admin_actions,
     }
     return render(request, 'home.html', context)
