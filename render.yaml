@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: اسم-مشروعك
+    env: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn project.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        value: mysql://ua7cbz6j8vcf11sy:u3Cwc8dJ4gizNQffcG6F@b7tolmw6xhl2mbhoc8mi-mysql.services.clever-cloud.com:3306/b7tolmw6xhl2mbhoc8mi
+      - key: SECRET_KEY
+        generateValue: true
