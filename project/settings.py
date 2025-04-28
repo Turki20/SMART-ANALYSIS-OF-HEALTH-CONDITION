@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
+    
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Middleware for serving static files in production
+    'corsheaders.middleware.CorsMiddleware', # Middleware for handling CORS
+
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -157,3 +161,6 @@ REST_FRAMEWORK = {
 
 
 LOGIN_REDIRECT_URL = '/'  # إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
+
+CORS_ALLOW_ALL_ORIGINS = True # السماح لجميع النطاقات بالوصول إلى واجهة برمجة التطبيقات
+CORS_ALLOW_CREDENTIALS = True # السماح بإرسال ملفات تعريف الارتباط مع الطلبات
