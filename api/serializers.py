@@ -3,6 +3,7 @@ from manage_patients.models import Patient
 from manage_doctors.models import Doctor
 from manage_appointments.models import Appointments
 from rest_framework import serializers
+from health_data.models import HealthData
 
 class CustomUserSerialziers(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +29,8 @@ class AppointmentsSerialziers(serializers.ModelSerializer):
     class Meta:
         model = Appointments
         fields = '__all__'
+        
+class HealthDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealthData
+        fields = ['patientID', 'analysisResult', 'timestamp', 'date']

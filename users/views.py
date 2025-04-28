@@ -50,7 +50,7 @@ def create_user(request):
     return render(request, 'create_user.html', context)
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def all_user(request):
     users = CustomUser.objects.all()
     context = {
@@ -59,7 +59,7 @@ def all_user(request):
     return render(request, 'all_users.html', context)
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def update_user(request, user_id):
     user = CustomUser.objects.get(id=user_id)
     if request.method == 'POST':
@@ -90,3 +90,6 @@ def delete_user(request, user_id):
 def logout_view(request):
     logout(request) 
     return redirect('/') 
+
+def not_authorized(request):
+    return render(request, 'not_authorized.html')

@@ -11,7 +11,7 @@ from manage_appointments.models import Appointments
 from django.db.models import Count
 
 @login_required(login_url="/user/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def home_page(request):
     adminLog = AdminLog.objects.order_by('-timestamp')[:10]
     numberOfPatient = Patient.objects.count()

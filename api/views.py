@@ -7,13 +7,17 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from drf_yasg.utils import swagger_auto_schema
+import requests
+from rest_framework.views import APIView
+from rest_framework import status
 
 # Create your views here.
 from users.models import CustomUser
-from .serializers import CustomUserSerialziers, PatientSerialziers, DoctorSerialziers, AppointmentsSerialziers, UpdateUserSerialziers
+from .serializers import CustomUserSerialziers, PatientSerialziers, DoctorSerialziers, AppointmentsSerialziers, UpdateUserSerialziers, HealthDataSerializer
 from manage_patients.models import Patient
 from manage_doctors.models import Doctor
 from manage_appointments.models import Appointments
+from health_data.models import HealthData
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -256,3 +260,67 @@ def craete_user(request):
             'role': user.role,
         }
     })
+    
+@permission_classes([IsAuthenticated])  
+class AnalyzeAudioAPIView(APIView):
+    def post(self, request):
+        audio_file = request.FILES.get('audio_file')
+        
+        if not audio_file:
+            return Response({'error': 'No audio file provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        files = {'audio_file': (audio_file.name, audio_file.read(), audio_file.content_type)}
+
+        try:
+            external_api_url = 'https://web-production-39fbc.up.railway.app/api/predict/'
+            external_response = requests.post(external_api_url, files=files)
+            
+            if external_response.status_code == 200:
+                result = external_response.json()
+                return Response(result, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'External API error', 'details': external_response.text}, status=external_response.status_code)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])  
+def healthdata_list_create(request):
+    if request.method == 'GET':
+        healthdata = HealthData.objects.all()
+        serializer = HealthDataSerializer(healthdata, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = HealthDataSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"mssage": 'تمت الاضافه بنجاح'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])  
+def healthdata_detail(request, pk):
+    if request.method == 'GET':
+        healthdata = HealthData.objects.filter(patientID=pk)
+        if not healthdata.exists():
+            return Response({'error': 'No HealthData found for this patient'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = HealthDataSerializer(healthdata, many=True)
+        return Response(serializer.data)
+
+    try:
+        healthdata = HealthData.objects.get(pk=pk)
+    except HealthData.DoesNotExist:
+        return Response({'error': 'HealthData not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = HealthDataSerializer(healthdata, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        healthdata.delete()
+        return Response({'message': 'HealthData deleted successfully'}, status=status.HTTP_204_NO_CONTENT)

@@ -5,7 +5,7 @@ from manage_patients.models import Patient
 
 class HealthData(models.Model):
     patientID = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    coughSound = models.FileField(upload_to='cough_sounds/')
+    coughSound = models.FileField(upload_to='cough_sounds/', null=True, blank=True)
     analysisResult = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
     date = models.DateField(auto_now_add=True)

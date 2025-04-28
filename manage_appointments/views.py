@@ -9,7 +9,7 @@ from .models import Appointments
 from .forms import CreatAppointment, UpdateAppointment
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def all_appoinnments(request):
     app = Appointments.objects.select_related('patientID', 'doctorID').all()
     context = {
@@ -18,7 +18,7 @@ def all_appoinnments(request):
     return render(request, 'all_appointment.html', context)
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 @csrf_exempt
 def create_appointment(request):
     if request.method == 'POST':
@@ -43,7 +43,7 @@ def create_appointment(request):
 
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def delete_appointment(request, id):
     try:
         app = Appointments.objects.get(id=id)
@@ -54,7 +54,7 @@ def delete_appointment(request, id):
     return redirect('/appointment/all_appintments/')
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def update_appointment(request, id):
     app = Appointments.objects.get(id=id)
     

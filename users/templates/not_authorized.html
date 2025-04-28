@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .unauthorized-container {
+        background-color: #f8d7da;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 100px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .unauthorized-title {
+        font-size: 2rem;
+        color: #721c24;
+    }
+
+    .unauthorized-message {
+        color: #721c24;
+        margin-top: 15px;
+        font-size: 1.2rem;
+    }
+
+    .btn-back {
+        margin-top: 25px;
+        padding: 10px 20px;
+        background-color: #04bdbd;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background-color: #039a9a;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <div class="unauthorized-container">
+        <h1 class="unauthorized-title">🚫 وصول مرفوض</h1>
+        <p class="unauthorized-message">عذرًا، ليس لديك صلاحية للدخول إلى هذه الصفحة.</p>
+        <a href="{% url 'logout' %}" class="btn btn-back">تسجيل الخروج</a>
+    </div>
+</div>
+
+{% endblock %}

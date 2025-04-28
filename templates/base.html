@@ -130,7 +130,7 @@
         <a href="{% url 'all_patients' %}"> <i class="fa-solid fa-hospital-user"></i> ادارة المرضى</a>
         <a href="{% url 'all_doctors' %}"><i class="fa-solid fa-user-doctor"></i> ادارة الدكاترة</a>
         <a href="{% url 'all_appintments' %}"><i class="fa-solid fa-calendar-check"></i> ادارة المواعيد</a>
-        <a href="#"><i class="fas fa-heartbeat"></i> البيانات الصحية</a>
+        <a href="{% url 'healthdata_list' %}"><i class="fas fa-heartbeat"></i> البيانات الصحية للمرضى</a>
         <a href="#"><i class="fas fa-file-alt"></i> التقارير</a>
         <a href="#"><i class="fas fa-cogs"></i> الإعدادات</a>
         {% endif %}

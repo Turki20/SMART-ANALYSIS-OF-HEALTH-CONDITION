@@ -11,7 +11,7 @@ from .models import Patient
 from .forms import CreatePatient, UpdatePatient, UpdateUserForm
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def all_pateints(request):
     users = CustomUser.objects.all()
     patients = Patient.objects.select_related('userID').all()
@@ -23,7 +23,7 @@ def all_pateints(request):
 
 @csrf_exempt
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def create_patient(request):
     if request.method == 'POST':
         form = CreatePatient(request.POST)
@@ -62,7 +62,7 @@ def create_patient(request):
     return render(request, 'create_patient.html', context)
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def delete_patient(request, userID):
     patient = Patient.objects.select_related('userID').get(id=userID)
     patient.delete()
@@ -73,7 +73,7 @@ def delete_patient(request, userID):
 
 @csrf_exempt
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def update_patient(request, id):
     patient = Patient.objects.select_related('userID').get(id=id)
 

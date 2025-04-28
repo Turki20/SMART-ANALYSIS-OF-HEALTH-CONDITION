@@ -10,7 +10,7 @@ from .forms import CreateDoctorForm, UpdateDoctorForm, UpdateUserForm
 from users.models import AdminLog
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def all_doctors(request):
     doctors = Doctor.objects.select_related('userID').all()
     context = {
@@ -21,7 +21,7 @@ def all_doctors(request):
 
 @csrf_exempt
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def create_doctor(request):
     if request.method == 'POST':
         form = CreateDoctorForm(request.POST)
@@ -61,7 +61,7 @@ def create_doctor(request):
     return render(request, 'create_doctor.html', context)
 
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def delete_doctor(request, id):
     doctor = Doctor.objects.get(id=id)
     doctor.delete()
@@ -72,7 +72,7 @@ def delete_doctor(request, id):
 
 @csrf_exempt
 @login_required(login_url="/admin/login/")
-@staff_member_required
+@staff_member_required(login_url='/user/not-authorized/')
 def update_doctor(request, id):
     doctor = Doctor.objects.select_related('userID').get(id=id)
     

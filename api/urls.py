@@ -45,4 +45,11 @@ urlpatterns = [
     path('update_appointment/<int:id>/', api.update_appointment_patient),
     path('update_user_data/<int:id>/', api.update_user_data),
     path('update_patient_data/<int:id>/', api.update_patient_data),
+    
+    # post endpoints for AI analysis
+    path('analyze_audio/', api.AnalyzeAudioAPIView.as_view(), name='analyze_audio'),
+    
+    # health data endpoints
+    path('healthdata/', api.healthdata_list_create, name='healthdata_list_create'),
+    path('healthdata/<int:pk>/', api.healthdata_detail, name='healthdata_detail'),
 ]

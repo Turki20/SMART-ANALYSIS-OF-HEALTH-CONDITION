@@ -9,4 +9,5 @@ urlpatterns = [
     path('delate/<int:user_id>/', user.delete_user, name='delete_user'),
     path('logout/', user.logout_view, name='logout'),
     path('login/', LoginView.as_view(), name='login'),
+    path('not-authorized/', user.not_authorized, name='not_authorized'),
 ]
