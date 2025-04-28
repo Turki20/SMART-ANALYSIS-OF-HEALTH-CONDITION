@@ -210,7 +210,7 @@ from drf_yasg import openapi
     required=['first_name', 'last_name', 'username', 'password1', 'password2', 'email']
 ))
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def craete_user(request):
     first_name = request.data.get('first_name')
     last_name = request.data.get('last_name')
