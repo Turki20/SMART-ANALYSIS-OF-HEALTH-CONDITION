@@ -153,11 +153,12 @@ def update_appointment_patient(request, id):
         appointment = Appointments.objects.get(id=id)
     except Appointments.DoesNotExist:
         return Response({'mssage': 'الموعد غير موجود'}, status=404)
-
+    if appointment.status == 'booked':
+        return Response({'mssage': 'الموعد محجوز بالفعل'}, status=400)
     serializer = AppointmentsSerialziers(appointment, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
-        return Response({'mssage': 'تم تحديث الموعد بنجاح', 'data': serializer.data})
+        return Response({'mssage': 'تم حجز الموعد بنجاح', 'data': serializer.data})
     else:
         return Response({'mssage': 'البيانات المدخلة غير صحيحة', 'errors': serializer.errors}, status=400)
 
@@ -220,8 +221,10 @@ def craete_user(request):
     password2 = request.data.get('password2')
     email = request.data.get('email')
     
-
-    if username == None or first_name == None or last_name == None or email == None or role == None:
+    age = request.data.get('age')
+    gender = request.data.get('gender')
+    
+    if username == None or first_name == None or last_name == None or email == None or role == None or age == None or gender == None:
         return Response({"message": "هناك بعض الحقول الغير مكتملة"}, status=400)
     
     if password1 != password2:
@@ -246,7 +249,7 @@ def craete_user(request):
     user.save()
     
     if role == 'patient':
-        Patient.objects.create(userID=user)
+        p = Patient.objects.create(userID=user, age=age, gender=gender)
     elif role == 'doctor':
         Doctor.objects.create(userID=user)
 
@@ -258,6 +261,11 @@ def craete_user(request):
             'username': user.username,
             'email': user.email,
             'role': user.role,
+        },
+        'patient': {
+            'id': p.id,
+            'age': p.age,
+            'gender':  p.gender,
         }
     })
     
@@ -324,3 +332,19 @@ def healthdata_detail(request, pk):
     elif request.method == 'DELETE':
         healthdata.delete()
         return Response({'message': 'HealthData deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_appointment_data_based_on_specialty(request):
+    specialty = request.data.get('specialty')
+    try:
+        appointments = Appointments.objects.select_related('patientID', 'doctorID').filter(doctorID__specialty__name=specialty)
+        apps = AppointmentsSerialziers(appointments, many=True)
+        return Response({
+            'appointments': apps.data,
+        })
+    except Appointments.DoesNotExist:
+        return Response({
+            'mssage': 'الموعد غير موجود'
+        }) 
+        

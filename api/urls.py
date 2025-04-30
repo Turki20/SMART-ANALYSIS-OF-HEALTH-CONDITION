@@ -52,4 +52,7 @@ urlpatterns = [
     # health data endpoints
     path('healthdata/', api.healthdata_list_create, name='healthdata_list_create'),
     path('healthdata/<int:pk>/', api.healthdata_detail, name='healthdata_detail'),
+    
+    # appointment endpoints
+    path('get_appointment_data_based_on_specialty/', api.get_appointment_data_based_on_specialty, name='get_appointment_data_based_on_specialty'),
 ]
