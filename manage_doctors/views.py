@@ -5,9 +5,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 # Create your views here.
-from .models import Doctor
+from .models import Doctor, Specialty
 from .forms import CreateDoctorForm, UpdateDoctorForm, UpdateUserForm
-from users.models import AdminLog
+from users.models import AdminLog, CustomUser
 
 @login_required(login_url="/admin/login/")
 @staff_member_required(login_url='/user/not-authorized/')
@@ -33,12 +33,16 @@ def create_doctor(request):
                 suser = None
 
             if suser == None:
+                checkDoctor = CustomUser.objects.get(id=userID.id).role
+                if checkDoctor != 'doctor':
+                    messages.error(request, 'المستخدم ليس مسجل كدكتور! ')
+                    return redirect('/doctor/create_doctor/')
                 doctor = form.save()
                 doctor.save()
                 newLog = AdminLog(adminID=request.user, action=f'اضافة دكتور : [{doctor.userID.username}]')
                 newLog.save()
                 messages.success(request, 'تم اضافة الدكتور بنجاح')
-            elif suser != None and suser.specialization == None:
+            elif suser != None and suser.specialty == None:
                 d = Doctor.objects.get(id=suser.id)
                 updateDoctor = CreateDoctorForm(request.POST, instance=d)
                 doctor = updateDoctor.save()

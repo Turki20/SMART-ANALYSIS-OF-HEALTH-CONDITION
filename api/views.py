@@ -111,7 +111,7 @@ def get_doctor_data(request, doctorID):
         us = CustomUserSerialziers(user)
         return Response({
             'user': us.data,
-            'patinet': ds.data
+            'doctor': ds.data
         })
     except Doctor.DoesNotExist:
         return Response({
@@ -222,7 +222,7 @@ def craete_user(request):
     
 
     if username == None or first_name == None or last_name == None or email == None or role == None:
-        return Response({"message": "هناك بعض الحقول الغير مكتملة"})
+        return Response({"message": "هناك بعض الحقول الغير مكتملة"}, status=400)
     
     if password1 != password2:
         return Response({'message': 'كلمتا المرور غير متطابقتين'}, status=400)

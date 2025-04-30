@@ -74,13 +74,13 @@
                 <tbody>
 
                     {% for i in doctors %}
-                    {% if i.specialization != None %}
+                    {% if i.specialty != None %}
                     <tr>
                         <td>{{i.userID.username}}</td>
                         <td>{{i.userID.first_name}}</td>
                         <td>{{i.userID.last_name}}</td>
                         <td>{{i.userID.email}}</td>
-                        <td>{{i.specialization}}</td>
+                        <td>{{i.specialty}}</td>
                         <td>{{i.availability}}</td>
                         <td class="text-center">
                             <a href="{% url 'delete_doctor' i.id %}"><button class="btn btn-outline-danger m-1">حذف</button></a>
