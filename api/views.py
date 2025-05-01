@@ -153,10 +153,21 @@ def update_appointment_patient(request, id):
         appointment = Appointments.objects.get(id=id)
     except Appointments.DoesNotExist:
         return Response({'mssage': 'الموعد غير موجود'}, status=404)
+    serializer = AppointmentsSerialziers(appointment, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        if serializer.validated_data.get('status') == 'canceled':
+            serializer.save()
+            return Response({'mssage': 'تم الغاء الموعد بنجاح', 'data': serializer.data})
+        
     if appointment.status == 'booked':
         return Response({'mssage': 'الموعد محجوز بالفعل'}, status=400)
-    serializer = AppointmentsSerialziers(appointment, data=request.data, partial=True)
+    
     if serializer.is_valid():
+        if serializer.validated_data.get('patientID') != None:
+            if Appointments.objects.filter(patientID=serializer.validated_data.get('patientID'), status='booked').exists():
+                return Response({'mssage': 'المريض لديه موعد بالفعل'}, status=400)
+
         serializer.save()
         return Response({'mssage': 'تم حجز الموعد بنجاح', 'data': serializer.data})
     else:
