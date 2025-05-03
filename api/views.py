@@ -75,8 +75,16 @@ def doctor_appintment(request, doctorID):
     try:
         appointments = Appointments.objects.select_related('patientID', 'doctorID').filter(doctorID=doctorID)
         apps = AppointmentsSerialziers(appointments, many=True)
+        finalapp = []
+        for app in apps.data:
+            if app['patientID'] != None:
+                app['patientID'] = PatientSerialziers(Patient.objects.get(id=app['patientID'])).data
+                app['patientID']['userID'] = CustomUserSerialziers(CustomUser.objects.get(id=app['patientID']['userID'])).data
+                finalapp.append(app)
+            else:
+                finalapp.append(app)
         return Response({
-            'appointments': apps.data,
+            'appointments': finalapp,
         })
     except Appointments.DoesNotExist:
         return Response({
