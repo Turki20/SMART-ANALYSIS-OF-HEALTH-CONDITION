@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'health_data',
     'home',
     'api',
+    'chat',
     
     'bootstrap5',
     'rest_framework',

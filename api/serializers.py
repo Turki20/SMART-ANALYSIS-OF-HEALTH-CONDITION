@@ -34,3 +34,25 @@ class HealthDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthData
         fields = ['patientID', 'analysisResult', 'timestamp', 'date']
+        
+        
+        
+from chat.models import Message, Chat
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class ChatSerializer(serializers.ModelSerializer):
+    participants = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+
+    class Meta:
+        model = Chat
+        fields = ['id', 'participants', 'created_at']
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    sender = serializers.ReadOnlyField(source='sender.id')  # نملأها تلقائيًا من request.user
+
+    class Meta:
+        model = Message
+        fields = ['id', 'chat', 'sender', 'content', 'timestamp']

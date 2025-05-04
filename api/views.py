@@ -367,3 +367,65 @@ def get_appointment_data_based_on_specialty(request):
             'mssage': 'الموعد غير موجود'
         }) 
         
+from .serializers import MessageSerializer, ChatSerializer
+from chat.models import Message, Chat
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_chat(request):
+    """
+    إنشاء محادثة جديدة بين مستخدمين
+    """
+    serializer = ChatSerializer(data=request.data)
+    if serializer.is_valid():
+        chat = serializer.save()
+        chat.participants.add(request.user)  # المرسل نفسه
+        return Response(ChatSerializer(chat).data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_chats(request):
+    """
+    عرض كل المحادثات التي يشارك فيها المستخدم الحالي
+    """
+    chats = Chat.objects.filter(participants=request.user)
+    serializer = ChatSerializer(chats, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_message(request, chat_id):
+    """
+    إرسال رسالة داخل شات معين
+    """
+    try:
+        chat = Chat.objects.get(id=chat_id, participants=request.user)
+    except Chat.DoesNotExist:
+        return Response({"error": "Chat not found or you are not a participant."}, status=404)
+
+    serializer = MessageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(sender=request.user, chat=chat)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def chat_messages(request, chat_id):
+    """
+    جلب كل الرسائل في شات معين
+    """
+    try:
+        chat = Chat.objects.get(id=chat_id, participants=request.user)
+    except Chat.DoesNotExist:
+        return Response({"error": "Chat not found or you are not a participant."}, status=404)
+
+    messages = chat.messages.all().order_by('timestamp')
+    serializer = MessageSerializer(messages, many=True)
+    return Response(serializer.data)

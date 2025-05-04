@@ -3,6 +3,7 @@ from django.db import models
 from manage_patients.models import Patient
 from manage_doctors.models import Doctor
 # Create your models here.
+from chat.models import Chat
 
 class Appointments(models.Model):
     STATUS_CHOICES = [
@@ -22,7 +23,8 @@ class Appointments(models.Model):
     date = models.DateField(null=True)
     time = models.DateTimeField(null=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='available')
-    
+    chat = models.OneToOneField(Chat, on_delete=models.SET_NULL, null=True, blank=True)
+
     def __str__(self):
         return f'Doctor: {self.doctorID} - Date: {self.date} - Time: {self.time} - Status: {self.get_status_display()}'
     

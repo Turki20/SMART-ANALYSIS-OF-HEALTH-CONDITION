@@ -55,4 +55,10 @@ urlpatterns = [
     
     # appointment endpoints
     path('get_appointment_data_based_on_specialty/', api.get_appointment_data_based_on_specialty, name='get_appointment_data_based_on_specialty'),
+    
+    # chat endpoints
+    path('chats/', api.create_chat, name='create_chat'),
+    path('chats/my/', api.my_chats, name='my_chats'),
+    path('chats/<int:chat_id>/messages/', api.chat_messages, name='chat_messages'),
+    path('chats/<int:chat_id>/messages/send/', api.send_message, name='send_message'),
 ]
