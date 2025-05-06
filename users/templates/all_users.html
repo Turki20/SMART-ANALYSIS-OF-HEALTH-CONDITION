@@ -86,7 +86,7 @@
             <td>{{i.last_name}}</td>
             <td>{{i.email}}</td>
             <td>{{i.role}}</td>
-            <td class="text-center"><a href="{% url 'delete_user' i.id %}"><button class="btn btn-outline-danger m-1">حذف</button></a><a href="{% url 'update_user' i.id %}"><button  class="btn btn-outline-dark m-1">تعديل</button></a><a href=""><button  class="btn btn-outline-success m-1">تفاصيل</button></a></td>
+            <td class="text-center"><a href="{% url 'delete_user' i.id %}"><button class="btn btn-outline-danger m-1">حذف</button></a><a href="{% url 'update_user' i.id %}"><button  class="btn btn-outline-dark m-1">تعديل</button></a></td>
 
         </tr>
         {% endfor %}

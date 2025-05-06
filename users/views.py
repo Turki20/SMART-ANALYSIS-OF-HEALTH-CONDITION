@@ -80,8 +80,9 @@ def update_user(request, user_id):
 
 def delete_user(request, user_id):
     user = CustomUser.objects.get(id=user_id)
-    user.delete()
+    
     newLog = AdminLog(adminID=request.user, action=f'حذف مستخدم : [{user.username}]')
+    user.delete()
     newLog.save()
     messages.success(request, 'تم حذف المستخدم بنجاح!')
     return redirect('/user/all_users/')
